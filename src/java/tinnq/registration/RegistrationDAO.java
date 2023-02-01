@@ -60,18 +60,17 @@ public class RegistrationDAO implements Serializable {
         try {
             con = DBUtils.makeConnection();
             if (con != null) {
-               String sql = "select * from registration"
-                       + "where lastname like ?";
+               String sql = "select * from registration where lastname like ?";
                stm = con.prepareStatement(sql);
                stm.setString(1, "%" + searchValue + "%");
                rs = stm.executeQuery();
                while (rs.next()) {
                    String username = rs.getString("username");
                    String password = rs.getString("password");
-                   String fullname = rs.getString("lastname");
+                   String lastname = rs.getString("lastname");
                    boolean role = rs.getBoolean("isAdmin");
                    
-                   RegistrationDTO dto = new RegistrationDTO(username,password,fullname,role);
+                   RegistrationDTO dto = new RegistrationDTO(username,password,lastname,role);
                    
                    if (this.listAccounts == null) {
                        this.listAccounts = new ArrayList<>();

@@ -5,63 +5,81 @@
 
 package tinnq.controller;
 
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletConfig;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import tinnq.registration.RegistrationDTO;
 
 /**
  *
- * @author admin
+ * @author ADMINS
  */
-public class MainController extends HttpServlet {
-    private final String LOGINCONTROLLER = "LoginController";
-    private final String SEARCHCONTROLLER = "SearchController";
-    private final String LOGINPAGE = "index.html";
-    @Override
-    public void init(ServletConfig config)
-    throws ServletException {
-        super.init(config); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-    } 
-
-    /**
+public class SearchResult extends HttpServlet {
+   
+    /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
-    public void destroy() {
-        super.destroy(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-        System.out.println("destroy");
-    }
-
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Search Result</title>");  
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Search Result</h1>");
             
-            String url = LOGINPAGE;
-            String button = request.getParameter("btAction");
-            try {
-                if (button.equals("Login")) {
-                    url = LOGINCONTROLLER;
+            String searchValue = request.getParameter("txtSearchValue");
+            out.println("Your search value is " + searchValue);
+            List<RegistrationDTO> result = (List<RegistrationDTO>)request.getAttribute("SEARCHRESULT");
+            
+            if (result != null) {
+                out.println("<table border = '1'>");
+                
+                out.println("<thead>");
+                out.println("<tr>");
+                out.println("<th>No.</th>");
+                out.println("<th>Username</th>");
+                out.println("<th>Password</th>");
+                out.println("<th>LastName</th>");
+                out.println("<th>Role</th>");
+                out.println("</tr>");
+                out.println("</thead>");
+                
+                out.println("<tbody>");
+                int count = 0;
+                for (RegistrationDTO x : result) {
+                    out.println("<tr>");
+                    out.println("<td>" + ++count + "</td>");
+                    out.println("<td>" + x.getUsername() + "</td>");
+                    out.println("<td>" + x.getPassword() + "</td>");
+                    out.println("<td>" + x.getLastname() + "</td>");
+                    out.println("<td>" + x.isRole() + "</th>");
+                    out.println("</tr>");
                 }
-                else if (button.equals("Search")) {
-                    url = SEARCHCONTROLLER;
-                }
+                out.println("</tbody>");
+                
+                out.println("</table>");
             }
-            finally {
-                RequestDispatcher rd = request.getRequestDispatcher(url);
-                rd.forward(request, response);
-                out.close();
+            else {
+                out.println("<h2>No record is matched</h2>");
             }
+            
+            out.println("</body>");
+            out.println("</html>");
         }
+        
     } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -76,7 +94,6 @@ public class MainController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         processRequest(request, response);
-        System.out.println("do GET......");
     } 
 
     /** 
@@ -90,9 +107,8 @@ public class MainController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         processRequest(request, response);
-        System.out.println("do POST.....");
     }
-    
+
     /** 
      * Returns a short description of the servlet.
      * @return a String containing servlet description

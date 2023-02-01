@@ -11,9 +11,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
     </head>
     <body>
         <h1>Welcome to DB Servlet</h1>
-        <label for="name">Name</label>
-        <input type="text" name="txtSearchValue" value="" id="name"/>
-        <br> <br>
-        <input type="submit" value="Search" name="btAction" />
+        <form action="MainController">
+            <label for="name">Name</label>
+            <input type="text" name="txtSearchValue" value="" id="name"/>
+            <br> <br>
+            <input type="submit" value="Search" name="btAction" />
+        </form>
     </body>
 </html>

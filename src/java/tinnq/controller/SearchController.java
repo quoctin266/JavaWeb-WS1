@@ -5,19 +5,26 @@
 
 package tinnq.controller;
 
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
+import java.util.List;
+import javax.naming.NamingException;
+import tinnq.registration.RegistrationDAO;
+import tinnq.registration.RegistrationDTO;
 
 /**
  *
  * @author admin
  */
 public class SearchController extends HttpServlet {
-   
+    private final String WELCOMEPAGE = "welcome.html";
+    private final String SEARCHRESULT = "SearchResult";
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -30,15 +37,28 @@ public class SearchController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet SearchController</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet SearchController at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            String url = WELCOMEPAGE;
+            String searchValue = request.getParameter("txtSearchValue");
+            try {
+                if (!searchValue.isEmpty()) {
+                    RegistrationDAO dao = new RegistrationDAO();
+                    dao.searchLastname(searchValue);
+                    List<RegistrationDTO> result = dao.getListAccounts();
+                    request.setAttribute("SEARCHRESULT", result);
+                    url = SEARCHRESULT;
+                }
+            }
+            catch (NamingException ex) {
+                ex.printStackTrace();
+            }
+            catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            finally {
+                RequestDispatcher rd = request.getRequestDispatcher(url);
+                rd.forward(request, response);
+                out.close();
+            }
         }
     } 
 

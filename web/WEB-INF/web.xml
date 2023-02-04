@@ -16,6 +16,10 @@
         <servlet-name>SearchResult</servlet-name>
         <servlet-class>tinnq.controller.SearchResult</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteController</servlet-name>
+        <servlet-class>tinnq.controller.DeleteController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MainController</servlet-name>
         <url-pattern>/MainController</url-pattern>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>SearchResult</servlet-name>
         <url-pattern>/SearchResult</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteController</servlet-name>
+        <url-pattern>/DeleteController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

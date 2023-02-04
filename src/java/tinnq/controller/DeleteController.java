@@ -11,14 +11,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import tinnq.registration.RegistrationDTO;
 
 /**
  *
- * @author ADMINS
+ * @author admin
  */
-public class SearchResult extends HttpServlet {
+public class DeleteController extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -32,58 +30,8 @@ public class SearchResult extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Search Result</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Search Result</h1>");
             
-            String searchValue = request.getParameter("txtSearchValue");
-            out.println("Your search value is " + searchValue);
-            out.println("<br>");
-            out.println("<br>");
-            
-            List<RegistrationDTO> result = (List<RegistrationDTO>)request.getAttribute("SEARCHRESULT");
-            if (result != null) {
-                out.println("<table border = '1'>");
-                
-                out.println("<thead>");
-                out.println("<tr>");
-                out.println("<th>No.</th>");
-                out.println("<th>Username</th>");
-                out.println("<th>Password</th>");
-                out.println("<th>LastName</th>");
-                out.println("<th>Role</th>");
-                out.println("<th>Delete</th>");
-                out.println("</tr>");
-                out.println("</thead>");
-               
-                out.println("<tbody>");
-                int count = 0;
-                for (RegistrationDTO x : result) {
-                    out.println("<tr>");
-                    out.println("<td>" + ++count + "</td>");
-                    out.println("<td>" + x.getUsername() + "</td>");
-                    out.println("<td>" + x.getPassword() + "</td>");
-                    out.println("<td>" + x.getLastname() + "</td>");
-                    out.println("<td>" + x.isRole() + "</td>");
-                    out.println("<td>" + "<a href=DeleteController?username=" + x.getUsername() + ">Delete</a>" + "</td>");
-                    out.println("</tr>");
-                }
-                out.println("</tbody>");
-                
-                out.println("</table>");
-            }
-            else {
-                out.println("<h2>No record is matched</h2>");
-            }
-            
-            out.println("</body>");
-            out.println("</html>");
         }
-        
     } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

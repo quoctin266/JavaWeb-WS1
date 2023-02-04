@@ -91,4 +91,34 @@ public class RegistrationDAO implements Serializable {
             }
         }
     }
+    
+    public boolean deleteEntry(String username) throws SQLException, NamingException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+               String sql = "delete from registration where username = ?";
+               stm = con.prepareStatement(sql);
+               stm.setString(1, username);
+               int row = stm.executeUpdate();
+               if (row > 0) {
+                   return true;
+               }
+            }
+        }
+        finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
+    }
 }

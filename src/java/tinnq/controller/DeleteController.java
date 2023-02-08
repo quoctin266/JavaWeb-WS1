@@ -29,7 +29,7 @@ public class DeleteController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
+    private final String SEARCHCONTROLLER = "SearchController";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -40,8 +40,7 @@ public class DeleteController extends HttpServlet {
                 RegistrationDAO dao = new RegistrationDAO();
                 
                 int row = dao.deleteEntry(username);
-                out.println(row + " rows were affected.");
-                
+                request.setAttribute("DeleteResult", row);
             }
             catch (NamingException ex) {
                 ex.printStackTrace();
@@ -50,6 +49,8 @@ public class DeleteController extends HttpServlet {
                 ex.printStackTrace();
             }
             finally {
+                RequestDispatcher rd = request.getRequestDispatcher(SEARCHCONTROLLER);
+                rd.forward(request, response);
                 out.close();
             }
         }

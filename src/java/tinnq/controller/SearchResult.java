@@ -42,8 +42,11 @@ public class SearchResult extends HttpServlet {
             out.println("<body>");
             out.println("<h1>Search Result</h1>");
             
+            
+            
             String searchValue = request.getParameter("txtSearchValue");
             out.println("Your search value is " + searchValue);
+            
             out.println("<br>");
             out.println("<br>");
             
@@ -64,19 +67,43 @@ public class SearchResult extends HttpServlet {
                
                 out.println("<tbody>");
                 int count = 0;
+                String checked;
                 for (RegistrationDTO x : result) {
+                    checked="";
                     out.println("<tr>");
+                    out.println("<form action='MainController'>");
                     out.println("<td>" + ++count + "</td>");
-                    out.println("<td>" + x.getUsername() + "</td>");
-                    out.println("<td>" + x.getPassword() + "</td>");
-                    out.println("<td>" + x.getLastname() + "</td>");
-                    out.println("<td>" + x.isRole() + "</td>");
-                    out.println("<td>" + "<a href=DeleteController?username=" + x.getUsername() + ">Delete</a>" + "</td>");
+                    out.println("<td>" 
+                            + x.getUsername() 
+                            + "<input type='hidden' name='txtUsername' value=" + x.getUsername() + "/>"
+                            + "</td>");
+                    out.println("<td>" 
+                            + "<input type='text' name='txtPassword' value=" + x.getPassword() + "/>" 
+                            + "</td>");
+                    out.println("<td>" 
+                            + x.getLastname() 
+                            + "</td>");
+                    if(x.isRole()) checked = "checked";
+                    out.println("<td>" 
+                            + "<input type='checkbox' name='chkRole' value='ADMIN' checked=" + checked + "/>"  
+                            + "</td>");
+                    out.println("<td>" 
+                            + "<a href=DeleteController?txtSearchValue=" + searchValue + "&username=" + x.getUsername() + ">Delete</a>" 
+                            + "</td>");
+                    out.println("<td>" 
+                            + "<input type='hidden' name='lastSearchValue' value=" + searchValue + "/>" 
+                            + "<input type='submit' name='btAction' value='Update'/>" 
+                            + "</td>");
+                    out.println("</form>");
                     out.println("</tr>");
                 }
                 out.println("</tbody>");
                 
                 out.println("</table>");
+                out.println("<br>");
+                out.println("<br>");
+                int row = (int)request.getAttribute("DeleteResult");
+                out.println(row + " rows were affected.");
             }
             else {
                 out.println("<h2>No record is matched</h2>");

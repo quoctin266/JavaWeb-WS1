@@ -95,7 +95,7 @@ public class RegistrationDAO implements Serializable {
     public int deleteEntry(String username) throws SQLException, NamingException {
         Connection con = null;
         PreparedStatement stm = null;
-        ResultSet rs = null;
+        
         int row = 0;
         try {
             con = DBUtils.makeConnection();
@@ -107,9 +107,6 @@ public class RegistrationDAO implements Serializable {
             }
         }
         finally {
-            if (rs != null) {
-                rs.close();
-            }
             if (stm != null) {
                 stm.close();
             }
@@ -118,5 +115,32 @@ public class RegistrationDAO implements Serializable {
             }
         }
         return row;
+    }
+    
+    public boolean updateInfo(String username, String password, boolean role) throws SQLException, NamingException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+               String sql = "update registration set password = ?, isAdmin = ? where username = ?";
+               stm = con.prepareStatement(sql);
+               stm.setString(1, password);
+               stm.setBoolean(2, role);
+               stm.setString(3, username);
+               int row = stm.executeUpdate();
+               if (row > 0) return true;
+            }
+        }
+        finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
     }
 }
